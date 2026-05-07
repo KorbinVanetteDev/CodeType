@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("temp/head", { title: "CodeType" }) %>
+
+    <style>
+        .vertflex {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <%- include("temp/nav") %>
+
+    <main class="type-main">
+        <div class="type">
+            <div class="typing-cont">
+                <textarea class="textarea" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+
+                <div class="char-cont"></div>
+                <div class="cursor"></div>
+                <div class="blur-div fade-in">Click or press any key to start</div>
+            </div>
+
+            <div class="stats">
+                <div class="top">
+                    <div class="start">
+                        <div class="pb">
+                            <ion-icon name="star"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <% include("temp/foot") %>
+    <script type="module" src="src/index.js"></script>
+    <script src="https://code.ionicframework.com/ionicons/2.0.1/ionicons.js"></script>
+</body>
+</html>
