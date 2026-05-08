@@ -7,6 +7,8 @@ const store = {
     accounts: {},
     pfps: {}
 }
+let userscache = [];
+let pfpcache = store.pfps;
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -31,6 +33,28 @@ function parseCookies(header) {
                 ];
             })
     );
+}
+
+async function setUsers() {
+    pfpcache = store.pfps;
+
+    const array= [];
+    for(const username in store.users) {
+        const user = store.users[username];
+        array.push({
+            username,
+            wpm: Math.floor(user.wpm),
+            score: user.score || 0,
+        });
+    }
+
+    array.sort((a,b) => (b.score + b.wpm) - (a.score + a.wpm));
+    userscache = array;
+}
+
+async function setUserInterval() {
+    await setUsers();
+    setTimeout(setUserInterval, 1000 * 2 * 60);
 }
 
 function setAuthCookie(res, username) {
@@ -92,7 +116,7 @@ function renderWithAuth(req, res, view, data = {}) {
     const pfp = username ? getPfp(username) : null;
 
     res.render(view, {
-        user,
+        user: username,
         pfp,
         ...data
     });
