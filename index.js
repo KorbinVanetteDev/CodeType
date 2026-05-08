@@ -120,6 +120,28 @@ function saveAccounts() {
     }
 }
 
+function loadUsers() {
+    try {
+        if(fs.existsSync("data/user.json")) {
+            const data = fs.readFileSync("data/users.json", "utf-8");
+            store.users = JSON.parse(data);
+        }
+    } catch(error) {
+        console.error("Failed to load users:", error);
+    }
+}
+
+function saveUsers() {
+    try{
+        if(!fs.existsSync("data")) {
+            fs.mkdirSync("data");
+        }
+        fs.writeFileSync("data/users.json", JSON.stringify(store.users, null, 2));
+    } catch(error) {
+        console.error("Failed to save users:", error);
+    }
+}
+
 
 // Route
 app.get("/", (req, res) => {
