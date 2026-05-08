@@ -35,6 +35,14 @@ function clearAuthCookie(res) {
     res.setHeader("Set-Cookie", "username=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax");
 }
 
+function normalizeUsername(username) {
+    return String(username || "").trim();
+}
+
+function escapeAvatarText(text) {
+    return text.replace(/[<>&"]/g, "");
+}
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 
