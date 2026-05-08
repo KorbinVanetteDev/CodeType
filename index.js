@@ -161,5 +161,10 @@ app.post("/login", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/logout", (req, res) => {
+    clearAuthCookie(res);
+    res.redirect("/");
+});
+
 //server start
 app.listen(8080);
