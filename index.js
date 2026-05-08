@@ -228,5 +228,9 @@ app.post("/logout", (req, res) => {
     res.redirect("/");
 });
 
+
+loadAccounts();
+loadUsers();
 //server start
 app.listen(8080);
+console.log("Started");
