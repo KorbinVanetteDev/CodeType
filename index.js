@@ -378,6 +378,12 @@ app.post("/result", (req, res) => {
     }
 });
 
+app.get("/leaders", (req, res) => {
+    renderWithAuth(req, res, "leaders", {
+        users: userscache
+    });
+});
+
 
 await setUserInterval();
 loadAccounts();
