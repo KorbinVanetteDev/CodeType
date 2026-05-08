@@ -350,6 +350,34 @@ app.post("/logout", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/result", (req, res) => {
+    try{
+        const username = getAuthenticatedUser(req);
+
+        if(!username) {
+            return res.status(410).send("Not authenticated");
+        }
+
+        const result = processTestResult(username, req.body);
+
+        if(!result.success) {
+            return res.status(400).json({ error: result.reason });
+        }
+
+        setUsers();
+        saveUsers();
+
+        res.json({
+            success: true,
+            pb: result.pb,
+            score: result.score
+        });
+    } catch(error) {
+        console.error("Result processing error:", error);
+        res.status(500).send("Error");
+    }
+});
+
 
 await setUserInterval();
 loadAccounts();
