@@ -226,6 +226,43 @@ function recordTestTiming(username, endDate, test) {
     timesep[username] = { endDate, test };
 }
 
+function processTestResult(username, data) {
+    const validation = validateTestData({ body: data });
+    if(!validation.valid) {
+        return { success: false, reason: validation.reason };
+    }
+
+    const { wpm, acc, score } = validation;
+    const users = store.users;
+
+    let pb = false;
+
+    if(!users[username]) {
+        pb=true;
+        users[username] = {
+            wpm,
+            score,
+            tests: [{ wpm, acc }],
+            wins: 0
+        };
+        pfpcache[username] = getPfp(username);
+    } else {
+        const user = users[username];
+
+        if(user.wpm < wpm) {
+            pb = true;
+            user.wpm = wpm;
+        }
+
+        if(!user.score) user.score = 0;
+        user.score += score;
+        user.tests.push({ wpm, acc });
+    }
+
+    recordTestTiming(username, new Date(), { wpm, acc });
+    return { success: true, pb, score };
+}
+
 
 
 // Route
