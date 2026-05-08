@@ -86,5 +86,16 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/auth", (req, res) => {
+    const cookies = parseCookies(req.headers.cookie || "");
+    const username = cookies.username;
+
+    if(username) {
+        return res.redirect("/");
+    }
+
+    res.render("auth", { error: null, activeTab: "login" });
+});
+
 //server start
 app.listen(8080);
