@@ -166,6 +166,49 @@ function saveUsers() {
     }
 }
 
+// FUN FUNCTION
+function calcwpm(start, end, wrong, typed) {
+    const minutes = (new Date(end) - new Date(start)) / 1000 / 60;
+    return (typed - wrong) / 5 / minutes;
+}
+
+function validateTestData(req) {
+    const { wrong, typed, wpm: w, start, end } = req.body;
+    const wpm = Math.round(w);
+    const acc = Math.floor((1 - wrong / typed) * 100);
+    const score = Math.floor(((typed - 24) - wrong) * (wpm / 100) * (acc / 100));
+
+    //Validation checks
+    if(wrong == null || typed == null || wpm == null || start == null || end == null) {
+        return { valid: false, reason: "Missing fields" };
+    }
+
+    if(!new Date(start).getTime() || !new Date(end).getTime()) {
+        return { valid: false, reason: "Invalid timestamps" };
+    }
+
+    if (wpm > 200 || wpm < 0 || score < 0) {
+        return { valid: false, reason: "Unrealistic WPM" };
+    }
+
+    if (start == end) {
+        return { valid: false, reason: "Start and end times cannot be the same" };
+    }
+
+    if(wrong > typed) {
+        return { valid: false, reason: "More wrong characters than total characters" };
+    }
+
+    // Verify WPM
+    const potwpm = calcwpm(start, end, wrong, typed);
+    if (Math.abs(potwpm - wpm) > 0.1) {
+        return { valid: false, reason: "Incorrect WPM calculation" };
+    }
+
+    return { valid: true, wpm, acc, score };
+}
+
+
 
 // Route
 app.get("/", (req, res) => {
