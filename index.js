@@ -134,5 +134,32 @@ app.post("/signup", (req, res) => {
     res.redirect("/");
 });
 
+app.post("/login", (req, res) => {
+    const username = normalizeUsername(req.body.username);
+    const password = String(req.body.password || "");
+
+    if (!username || !password) {
+        res.status(400).render("auth", { 
+            error: "Enter your username and password.",
+            activeTab: "login"
+        });
+        return;
+    }
+
+    const account = store.accounts[username];
+    
+    // Simple password check
+    if (!account || account.password !== password) {
+        res.status(401).render("auth", { 
+            error: "Incorrect username or password.", 
+            activeTab: "login" 
+        });
+        return;
+    }
+
+    setAuthCookie(res, username);
+    res.redirect("/");
+});
+
 //server start
 app.listen(8080);
