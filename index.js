@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "fs";
 
 const app = express();
 const store = {
@@ -6,6 +7,14 @@ const store = {
     accounts: {},
     pfps: {}
 }
+
+app.set("view engine", "ejs");
+app.set("views", "views");
+
+app.use(express.static("public"));
+app.use(express.static("favicons"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 function parseCookies(header) {
     return Object.fromEntries(
@@ -89,13 +98,28 @@ function renderWithAuth(req, res, view, data = {}) {
     });
 }
 
-app.set("view engine", "ejs");
-app.set("views", "views");
+function loadAccounts() {
+    try {
+        if(fs.existsSync("data/accounts.json")){
+            const data = fs.readFileSync("data/accounts.json", "utf-8");
+            store.accounts = JSON.parse(data);
+        }
+    } catch (error) {
+        console.error("Failed to load accounts:", error);
+    }
+}
 
-app.use(express.static("public"));
-app.use(express.static("favicons"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+function saveAccounts() {
+    try {
+        if(!fs.existsSync("data")) {
+            fs.mkdirSync("data");
+        }
+        fs.writeFileSync("data/accounts.json", JSON.stringify(store.accounts, null, 2));
+    } catch(error) {
+        console.error("Failed to save accounts:", error);
+    }
+}
+
 
 // Route
 app.get("/", (req, res) => {
