@@ -97,5 +97,42 @@ app.get("/auth", (req, res) => {
     res.render("auth", { error: null, activeTab: "login" });
 });
 
+app.post("/signup", (req, res) => {
+    const username = normalizeUsername(req.body.username);
+    const password = String(req.body.password || "");
+
+    //Validation
+    if(!username) {
+        res.status(400).render("auth", {
+            error: "Choose a username.",
+            activeTab: "signup"
+        });
+        return;
+    }
+
+    if(!password) {
+        res.status(400).render("auth", {
+            error: "Choose a password.",
+            activeTab: "signup"
+        });
+        return;
+    }
+
+    // Check if the account exists
+    if(store.accounts[username]) {
+        res.status(409).render("auth", {
+            error: "Username already taken.",
+            activeTab: "signup"
+        });
+        return;
+    }
+
+    // Create account
+    store.accounts[username] = { password };
+    saveAccounts();
+    setAuthCookie(res, username);
+    res.redirect("/");
+});
+
 //server start
 app.listen(8080);
