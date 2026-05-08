@@ -7,6 +7,7 @@ const store = {
     accounts: {},
     pfps: {}
 }
+const timesep = {}
 let userscache = [];
 let pfpcache = store.pfps;
 
@@ -114,9 +115,9 @@ function getAuthenticatedUser(req) {
 function renderWithAuth(req, res, view, data = {}) {
     const username = getAuthenticatedUser(req);
     const pfp = username ? getPfp(username) : null;
-
+    
     res.render(view, {
-        user: username,
+        username,
         pfp,
         ...data
     });
@@ -206,6 +207,23 @@ function validateTestData(req) {
     }
 
     return { valid: true, wpm, acc, score };
+}
+
+function canTakeTest(username) {
+    const timestamp = timesep[username];
+    if (!timestamp) return true;
+
+    const { endDate, test: { wpm: twpm, acc: tacc} } = timestamp;
+
+    if(endDate >= new Date().getTime()) {
+        return false;
+    }
+
+    return true;
+}
+
+function recordTestTiming(username, endDate, test) {
+    timesep[username] = { endDate, test };
 }
 
 
