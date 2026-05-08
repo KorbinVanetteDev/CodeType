@@ -73,6 +73,22 @@ function getPfp(username) {
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+function getAuthenticatedUser(req) {
+    const cookies = parseCookies(req.headers.cookie || "");
+    return normalizeUsername(cookies.username);
+}
+
+function renderWithAuth(req, res, view, data = {}) {
+    const username = getAuthenticatedUser(req);
+    const pfp = username ? getPfp(username) : null;
+
+    res.render(view, {
+        user,
+        pfp,
+        ...data
+    });
+}
+
 app.set("view engine", "ejs");
 app.set("views", "views");
 
