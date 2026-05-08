@@ -1,0 +1,114 @@
+:root {
+    --font: 'Fira Code', 'Courier New', monospace;
+    --font-serif: 'Merriweather', serif;
+
+    --background-primary: #0d1117;
+    --background-primaryt: #0d111700;
+    --background-secondary: #161b22;
+
+    --accent-primary: #79c0ff;
+    --accent-primary-hover: #a4d1ff;
+
+    --accent-secondary: #c9d1d0;
+
+    --accent-positive: #3fb950;
+    --accent-negative: #f85149;
+
+    --text-foreground: #e6edf3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    background: var(--background-primary);
+    height: 100%;
+    font-family: var(--font);
+    transition: color 0.2s, background 0.2s;
+    color: var(--text-foreground);
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    min-height: 100vh;
+}
+
+nav {
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.logo a {
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+.nav-right {
+    display:flex;
+    gap:16px;
+    align-items: center;
+}
+
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.sign-out-btn {
+    background: var(--accent-negative);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+footer {
+    padding: 16px;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.tooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tooltip-text {
+    background: var(--accent-primary);
+    color:white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: 0.2s;
+    margin-left: 8px;
+}
+
+.tooltip:hover .tooltip-text {
+    opacity: 1;
+}
