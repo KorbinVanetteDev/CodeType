@@ -15,5 +15,9 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
 //server start
 app.listen(8080);
