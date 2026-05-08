@@ -1,0 +1,19 @@
+<nav>
+    <div class="logo">
+        <a href="/">CodeType</a>
+    </div>
+
+    <div class="nav-right">
+        <% if (username) {%>
+            <a href="/user/<%= username %>" class="profile-link">
+                <img src="<%= pfp %>" alt="Avatar" class="avatar">
+                <%= username %>
+            </a>
+            <form action="/logout" method="POST" style="display:inline;">
+                <button type="submit" class="sign-out-btn">Sign out</button>
+            </form>
+        <% } else { %>
+            <a href="/auth" class="auth-link">Sign in</a>
+        <% } %>
+    </div>
+</nav>
