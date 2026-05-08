@@ -253,6 +253,7 @@ app.post("/logout", (req, res) => {
 });
 
 
+await setUserInterval();
 loadAccounts();
 loadUsers();
 //server start
