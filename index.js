@@ -1,6 +1,11 @@
 import express from "express";
 
 const app = express();
+const store = {
+    users: {},
+    accounts: {},
+    pfps: {}
+}
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -13,10 +18,6 @@ app.use(express.urlencoded({ extended: false }));
 // Route
 app.get("/", (req, res) => {
     res.render("index");
-});
-
-app.get("/about", (req, res) => {
-    res.render("about");
 });
 
 //server start
