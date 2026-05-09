@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("temp/head", { title: "CodeType | Leaderboard" }) %>
+    
+    <style>
+        .leaders-cont {
+            padding: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .leaders-cont h1 {
+            font-size: 48px;
+            margin: 0 0 32px 0;
+            color: var(--text-foreground);
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table thead {
+            background: var(--background-secondary);
+        }
+
+        .leaderboard-table th {
+            padding: 16px;
+            text-align: left;
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .leaderboard-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--background-secondary);
+            color: var(--accent-secondary);
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: var(--background-secondary);
+        }
+
+        .rank {
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .rank.gold {
+            color: #ffc107;
+        }
+
+        .rank.silver {
+            color: #c0c0c0;
+        }
+
+        .rank.bronze {
+            color: #cd7f32;
+        }
+
+        .user-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .user-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <%- include("temp/nav") %>
+    
+    <main class="leaders-cont">
+        <h1>Leaderboard</h1>
+        
+        <table class="leaderboard-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Best WPM</th>
+                    <th>Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach((user, index) => { %>
+                    <tr>
+                        <td>
+                            <span class="rank <%= index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '' %>">
+                                <%= index + 1 %>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="/user/<%= user.username %>" class="user-link">
+                                <%= user.username %>
+                            </a>
+                        </td>
+                        <td><%= user.wpm %> WPM</td>
+                        <td><%= user.score %> pts</td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </main>
+    
+    <%- include("temp/foot") %>
+</body>
+</html>
