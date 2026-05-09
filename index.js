@@ -384,6 +384,29 @@ app.get("/leaders", (req, res) => {
     });
 });
 
+app.get("/user/:username", (req, res) => {
+    const viewedUsername = normalizeUsername(req.params.username);
+    const authUsername = getAuthenticatedUser(req);
+
+    const user = store.users[viewedUsername];
+    const account = store.accounts[viewedUsername];
+
+    if(!user || !account) {
+        return res.status(404).render("noprofile");
+    }
+
+    const pfp = getPfp(viewedUsername);
+
+    res.render("prof", {
+        username: authUsername,
+        pgp: authUsername ? getPfp(authUsername) : null,
+        viewedUsername,
+        viewedPfp: pfp,
+        user,
+        isOwn: authUsername === viewedUsername
+    })
+});
+
 
 await setUserInterval();
 loadAccounts();
