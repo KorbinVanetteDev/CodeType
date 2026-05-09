@@ -404,7 +404,7 @@ app.get("/user/:username", (req, res) => {
         viewedPfp: pfp,
         user,
         isOwn: authUsername === viewedUsername
-    })
+    });
 });
 
 
