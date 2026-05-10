@@ -267,7 +267,7 @@ function processTestResult(username, data) {
 
 // Route
 app.get("/", (req, res) => {
-    res.render("index");
+    renderWithAuth(req, res, "index");
 });
 
 app.get("/auth", (req, res) => {
@@ -392,14 +392,12 @@ app.get("/user/:username", (req, res) => {
     const account = store.accounts[viewedUsername];
 
     if(!user || !account) {
-        return res.status(404).render("noprofile");
+        return renderWithAuth(req, res, "noprofile");
     }
 
     const pfp = getPfp(viewedUsername);
 
-    res.render("prof", {
-        username: authUsername,
-        pgp: authUsername ? getPfp(authUsername) : null,
+    renderWithAuth(req, res, "prof", {
         viewedUsername,
         viewedPfp: pfp,
         user,
