@@ -120,6 +120,18 @@
             </div>
         <% } %>
 
+        <div class="prof-achievements">
+            <% if (user.wpm >= 100) { %>
+                <div class="achievement">Speed Demon (100+ WPM)</div>
+            <% } %>
+            <% if (user.wpm >= 150) { %>
+                <div class="achievement">Speedster (150+ WPM)</div>
+            <% } %>
+            <% if (user.tests && user.tests.length >= 10) { %>
+                <div class="achievement">Dedicated (10+ tests)</div>
+            <% } %>
+        </div>
+
         <% if (isOwn) { %>
             <a href="/" style="margin-top: 32px; display: inline-block; color: var(--accent-primary);">
                 Back to typing test
