@@ -442,6 +442,13 @@ app.post("/admin/fakestats", (req, res) => {
     res.json({ success: true, username, user: store.users[username] });
 });
 
+app.get("/search/:username", (req, res) => {
+    const search = req.params.username.toLowerCase();
+    const matches = Object.keys(store.users).filter(u =>
+        u.toLowerCase().includes(search)
+    );
+    res.json({ matches });
+});
 
 loadAccounts();
 loadUsers();
