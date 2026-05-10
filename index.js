@@ -147,7 +147,7 @@ function saveAccounts() {
 
 function loadUsers() {
     try {
-        if(fs.existsSync("data/user.json")) {
+        if(fs.existsSync("data/users.json")) {
             const data = fs.readFileSync("data/users.json", "utf-8");
             store.users = JSON.parse(data);
         }
@@ -406,14 +406,46 @@ app.get("/user/:username", (req, res) => {
         viewedUsername,
         viewedPfp: pfp,
         user,
-        isOwn: authUsername === viewedUsername
+        isOwn: authUsername === viewedUsername,
+        userscache
     });
 });
 
+// Dev: inject fake stats for a user (unprotected, local testing only)
+app.post("/admin/fakestats", (req, res) => {
+    const username = normalizeUsername(req.body.username || req.query.username);
+    if (!username) return res.status(400).json({ error: "username required" });
 
-await setUserInterval();
+    const wpm = Number(req.body.wpm) || Math.floor(Math.random() * 80) + 20;
+    const score = Number(req.body.score) || Math.floor(Math.random() * 2000);
+    const tests = Number(req.body.tests) || 5;
+
+    if (!store.users[username]) {
+        store.users[username] = { wpm, score, tests: [], wins: 0 };
+    } else {
+        store.users[username].wpm = wpm;
+        store.users[username].score = score;
+        if (!Array.isArray(store.users[username].tests)) store.users[username].tests = [];
+    }
+
+    for (let i = 0; i < tests; i++) {
+        store.users[username].tests.push({
+            wpm: Math.max(1, Math.round(wpm + (Math.random() - 0.5) * 20)),
+            acc: Math.min(100, Math.max(0, Math.round(85 + Math.random() * 15)))
+        });
+    }
+
+    pfpcache[username] = getPfp(username);
+    setUsers();
+    saveUsers();
+
+    res.json({ success: true, username, user: store.users[username] });
+});
+
+
 loadAccounts();
 loadUsers();
+await setUserInterval();
 //server start
 app.listen(8080);
 console.log("Started");
