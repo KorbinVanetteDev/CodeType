@@ -103,7 +103,20 @@
                 <% }); %>
             </tbody>
         </table>
+        <div class="filer-buttons">
+            <button class="filer-btn active" data-sort="combined">Top Rated</button>
+            <button class="filter-btn" data="wpm">Fastest</button>
+            <button class="filter-btn">Highest Score</button>
+        </div>
     </main>
+
+    <script>
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                console.log("Sort by:", btn.getAttribute("data-sort"));
+            });
+        });
+    </script>
     
     <%- include("temp/foot") %>
 </body>
