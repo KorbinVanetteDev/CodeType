@@ -278,7 +278,7 @@ app.get("/auth", (req, res) => {
         return res.redirect("/");
     }
 
-    res.render("auth", { error: null, activeTab: "login" });
+    renderWithAuth(req, res, "auth", { error: null, activeTab: "login" });
 });
 
 app.post("/signup", (req, res) => {
@@ -287,7 +287,8 @@ app.post("/signup", (req, res) => {
 
     //Validation
     if(!username) {
-        res.status(400).render("auth", {
+        res.status(400);
+        renderWithAuth(req, res, "auth", {
             error: "Choose a username.",
             activeTab: "signup"
         });
@@ -295,7 +296,8 @@ app.post("/signup", (req, res) => {
     }
 
     if(!password) {
-        res.status(400).render("auth", {
+        res.status(400);
+        renderWithAuth(req, res, "auth", {
             error: "Choose a password.",
             activeTab: "signup"
         });
@@ -304,7 +306,8 @@ app.post("/signup", (req, res) => {
 
     // Check if the account exists
     if(store.accounts[username]) {
-        res.status(409).render("auth", {
+        res.status(409);
+        renderWithAuth(req, res, "auth", {
             error: "Username already taken.",
             activeTab: "signup"
         });
@@ -323,7 +326,8 @@ app.post("/login", (req, res) => {
     const password = String(req.body.password || "");
 
     if (!username || !password) {
-        res.status(400).render("auth", { 
+        res.status(400);
+        renderWithAuth(req, res, "auth", { 
             error: "Enter your username and password.",
             activeTab: "login"
         });
@@ -334,7 +338,8 @@ app.post("/login", (req, res) => {
     
     // Simple password check
     if (!account || account.password !== password) {
-        res.status(401).render("auth", { 
+        res.status(401);
+        renderWithAuth(req, res, "auth", { 
             error: "Incorrect username or password.", 
             activeTab: "login" 
         });
