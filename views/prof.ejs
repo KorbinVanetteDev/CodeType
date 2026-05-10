@@ -81,7 +81,19 @@
             <img src="<%= viewedPfp %>" class="prof-avatar" alt="Avatar">
             <div class="prof-info">
                 <h1><%= viewedUsername %></h1>
-                <p>Joined and competing</p>
+                <p>
+                    <% 
+                        let rank = 0;
+                        userscache.forEach((u, i) => {
+                            if (u.username === viewedUsername) rank = i + 1;
+                        });
+                    %>
+                    <% if (rank > 0) { %>
+                        Ranked #<span style="color: var(--accent-primary);"><%= rank %></span>
+                    <% } else { %>
+                        No ranking yet
+                    <% } %>
+                </p>
             </div>
         </div>
 
